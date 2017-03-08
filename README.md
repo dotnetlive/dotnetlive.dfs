@@ -4,9 +4,9 @@
 
 目前已实现基本功能：
 * 文件上传接口  
- /file/upload
+ /api/file/upload
 * 文件下载接口  
-/file/get/{uuid}
+/api/file/{uuid}
 * mongodb信息配置
 
 
