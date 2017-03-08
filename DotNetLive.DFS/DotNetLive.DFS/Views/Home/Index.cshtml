@@ -1,6 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<h1><a href="/swagger">文档</a></h1>
+
 
 <h1>测试：</h1>
 <form action="/File/Upload" method="post" enctype="multipart/form-data">
@@ -25,14 +27,15 @@
                 var $result = $("#result");
                 $.ajax({
                     type: "POST",
-                    url: "/File/Upload",
+                    url: "/api/file/upload",
                     contentType: false,
                     processData: false,
                     data: data,
                     success: function (res) {
                         if (res.success) {
                             $.each(res.files, function (i, file) {
-                                $result.append($("<img src='/file/get/" + file.id + "' />"));
+                                console.log(file);
+                                $result.append($("<img src='/api/file/" + file.id + "' />"));
                             });
                         }
                     }

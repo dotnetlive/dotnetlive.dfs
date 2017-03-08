@@ -11,7 +11,7 @@ using DotNetLive.DFS.Core;
 
 namespace DotNetLive.DFS
 {
-    public class Startup
+    public partial class Startup
     {
         public Startup(IHostingEnvironment env)
         {
@@ -31,6 +31,7 @@ namespace DotNetLive.DFS
             // Add framework services.
             services.AddMvc();
             services.AddOptions();
+            ConfigSwagger(services);
             services.Configure<MongoDbOption>(Configuration.GetSection("MongoDb"));
             services.AddScoped<IDistributedFileSystem, MongoDistributedFIleSystem>();
         }
@@ -40,7 +41,6 @@ namespace DotNetLive.DFS
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -50,9 +50,8 @@ namespace DotNetLive.DFS
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
             app.UseStaticFiles();
-
+            ConfigSwagger(app);
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
