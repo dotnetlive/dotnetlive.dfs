@@ -13,7 +13,7 @@ namespace DotNetLive.DFS.Models
         /// <summary>
         /// 成功上传文件信息
         /// </summary>
-        public IList<UploadedFileInfo> Files { set; get; }
+        public UploadedFileInfo File { set; get; }
 
 
     }

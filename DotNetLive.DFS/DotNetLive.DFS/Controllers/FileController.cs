@@ -14,6 +14,7 @@ namespace DotNetLive.DFS.Controllers
     /// <summary>
     /// 文件
     /// </summary>
+    [Produces("application/json")]
     [Route("api/file")]
     public class FileController : Controller
     {
@@ -24,30 +25,33 @@ namespace DotNetLive.DFS.Controllers
             _dfs = dfs;
         }
         /// <summary>
-        /// 文件上传
+        /// 单文件上传
         /// </summary>
+        /// <param name="file">文件</param>
         /// <returns></returns>
-        [HttpPost, Route("upload")]
-        public FileUploadResponse Upload()
+        [HttpPost]
+        public FileUploadResponse Upload([FromForm]IFormFile file)
         {
-            var form = Request.Form;
-            var files = form.Files;
-            if (files.Count() == 0)
+            if (file == null)
             {
                 return new FileUploadResponse() { Success = false, Msg = "没有文件" };
             }
-            var result = new List<UploadedFileInfo>();
-            foreach (var file in files)
+            using (var s = file.OpenReadStream())
             {
-                using (var s = file.OpenReadStream())
+                var uuid = _dfs.UploadFile(file.FileName, s);
+                var fileInfo = new UploadedFileInfo()
                 {
-                    var uuid = _dfs.UploadFile(file.FileName, s);
-                    result.Add(new UploadedFileInfo() { Id = uuid, FileName = file.FileName });
-                }
+                    Id = uuid,
+                    FileName = file.FileName
+                };
+                return new FileUploadResponse()
+                {
+                    Success = true,
+                    Msg = "上传成功",
+                    File = fileInfo
+                };
             }
-            return   new FileUploadResponse() { Success = true, Msg = "上传成功",Files=result };
         }
-        
         /// <summary>
         /// 获取文件
         /// </summary>
@@ -62,5 +66,6 @@ namespace DotNetLive.DFS.Controllers
             return File(fileInfo.Stream, minetype, fileName);
         }
     }
+    
 
 }

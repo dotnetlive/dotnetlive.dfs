@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using DotNetLive.DFS.Core;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace DotNetLive.DFS
 {
@@ -28,7 +29,6 @@ namespace DotNetLive.DFS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
             services.AddMvc();
             services.AddOptions();
             ConfigSwagger(services);
@@ -57,7 +57,7 @@ namespace DotNetLive.DFS
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
-              
+
             });
         }
     }

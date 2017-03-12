@@ -34,13 +34,10 @@ namespace DotNetLive.DFS.Core
             {
                 Stream = stream,
                 FileName = stream.FileInfo.Filename,
-                MD5= stream.FileInfo.MD5
+                MD5 = stream.FileInfo.MD5
             };
             return result;
         }
-
-        
-
 
     }
 }
